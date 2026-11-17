@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel and SQL Playbook | Data Validation Copilot</title>
+  <meta name="description" content="A practical playbook for Excel and SQL: lookups, conditional totals, cleanup, PivotTables, queries, joins, and data validation checks.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">fx</span>
+        Data Validation Copilot
+      </a>
+      <a class="nav-link" href="index.html">&larr; Home</a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-head">
+      <div class="wrap">
+        <p class="eyebrow">The playbook</p>
+        <h1>Excel and SQL, one task at a time</h1>
+        <p class="lede">
+          A working reference for the jobs that come up every week: looking things up,
+          totaling by category, cleaning messy data, writing a query, joining tables, and
+          checking that the numbers can be trusted. Every example is short enough to
+          copy and adapt.
+        </p>
+        <nav class="toc" aria-label="On this page">
+          <a href="#excel">A. Excel essentials</a>
+          <a href="#sql">B. SQL essentials</a>
+          <a href="#validation">C. Validation checks</a>
+          <a href="#reference">D. Quick reference</a>
+        </nav>
+      </div>
+    </section>
+
+    <div class="wrap guide">
+
+      <!-- ================= PART A: EXCEL ================= -->
+
+      <div class="part-head" id="excel">
+        <p class="eyebrow">Part A</p>
+        <h2>Excel essentials</h2>
+        <p>Five skills that cover most of what analysts do in a spreadsheet.</p>
+      </div>
+
+      <article class="step">
+        <div class="step-num">A1</div>
+        <div class="step-body">
+          <h2>Look up a value from another table</h2>
+          <p>
+            You have a customer ID on one sheet and need the customer's name from
+            another. That is a lookup. Use <code>XLOOKUP</code> if you have Excel 2021 or
+            Microsoft 365, and <code>VLOOKUP</code> on older versions.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">XLOOKUP</span>
+              <pre>=XLOOKUP(A2, Customers!A:A,
+         Customers!B:B, "Not found")</pre>
+            </div>
+            <div class="code">
+              <span class="tag">VLOOKUP</span>
+              <pre>=VLOOKUP(A2, Customers!A:C, 2, FALSE)</pre>
+            </div>
+          </div>
+          <ul>
+            <li><code>XLOOKUP</code> reads as: find this value, in this column, and return the match from that column. The last part is what to show when nothing matches.</li>
+            <li>With <code>VLOOKUP</code>, always end with <code>FALSE</code> for an exact match. Leaving it off can return a wrong row without any warning.</li>
+            <li><code>VLOOKUP</code> can only look to the right of the lookup column. <code>XLOOKUP</code> can look in either direction.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">A2</div>
+        <div class="step-body">
+          <h2>Total or count only the rows that match</h2>
+          <p>
+            To answer questions like "what were West region sales in 2026?" use the
+            functions that end in IFS. They add or count only the rows that meet every
+            condition you list.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Sum with conditions</span>
+              <pre>=SUMIFS(D2:D500,
+        B2:B500, "West",
+        C2:C500, 2026)</pre>
+            </div>
+            <div class="code">
+              <span class="tag">Count with conditions</span>
+              <pre>=COUNTIFS(B2:B500, "West",
+          D2:D500, ">1000")</pre>
+            </div>
+          </div>
+          <p>
+            In <code>SUMIFS</code> the range to add comes first, followed by pairs: a
+            range to test and the value it must equal. Comparisons such as
+            <code>">1000"</code> go inside quotation marks.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">A3</div>
+        <div class="step-body">
+          <h2>Clean up messy text</h2>
+          <p>
+            Data pasted from other systems often carries stray spaces, odd capitalization,
+            and numbers stored as text. These make lookups fail even when two values look
+            identical.
+          </p>
+          <table>
+            <thead>
+              <tr><th>Problem</th><th>Fix</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Extra spaces</td><td><code>=TRIM(A2)</code></td><td>Removes leading, trailing, and doubled spaces</td></tr>
+              <tr><td>Hidden characters</td><td><code>=CLEAN(A2)</code></td><td>Strips non-printing characters</td></tr>
+              <tr><td>Inconsistent capitals</td><td><code>=PROPER(A2)</code></td><td>Capitalizes the first letter of each word</td></tr>
+              <tr><td>Numbers stored as text</td><td><code>=VALUE(A2)</code></td><td>Converts text that looks like a number into a number</td></tr>
+              <tr><td>Two values in one cell</td><td>Data, Text to Columns</td><td>Splits a column at a comma, space, or other character</td></tr>
+            </tbody>
+          </table>
+          <p class="callout">
+            Clean into a new column, check the result, then copy and use Paste Special,
+            Values to replace the original. That way a bad formula never destroys the
+            source data.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">A4</div>
+        <div class="step-body">
+          <h2>Summarize with a PivotTable</h2>
+          <p>
+            A PivotTable turns thousands of rows into a summary without a single formula.
+            It is the fastest way to answer "how much, by what?"
+          </p>
+          <ol>
+            <li>Click any cell inside your data. Make sure every column has a header and there are no blank rows.</li>
+            <li>Go to Insert, PivotTable, and click OK to place it on a new sheet.</li>
+            <li>Drag a category field, such as Region, into Rows.</li>
+            <li>Drag a number field, such as Sales, into Values. Excel totals it by region.</li>
+            <li>Drag a second field into Columns or Filters to slice the summary further.</li>
+          </ol>
+          <p>
+            If the source data changes, right-click the PivotTable and choose Refresh. It
+            does not update on its own.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">A5</div>
+        <div class="step-body">
+          <h2>Decode the error in the cell</h2>
+          <p>Each Excel error is a specific message. Read it before you retype the formula.</p>
+          <table>
+            <thead>
+              <tr><th>Error</th><th>What it means</th><th>First thing to check</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>#N/A</code></td><td>A lookup found no match</td><td>Extra spaces, or a number on one side and text on the other</td></tr>
+              <tr><td><code>#VALUE!</code></td><td>Wrong type of data</td><td>Text sitting in a cell that the formula treats as a number</td></tr>
+              <tr><td><code>#REF!</code></td><td>The formula points at cells that no longer exist</td><td>A deleted row, column, or sheet</td></tr>
+              <tr><td><code>#DIV/0!</code></td><td>Dividing by zero or by a blank cell</td><td>The cell in the bottom of the fraction</td></tr>
+              <tr><td><code>#NAME?</code></td><td>Excel does not recognize a word</td><td>A misspelled function, or text missing its quotation marks</td></tr>
+              <tr><td><code>#####</code></td><td>Not an error. The column is too narrow.</td><td>Widen the column</td></tr>
+            </tbody>
+          </table>
+          <div class="code">
+            <span class="tag">Show a friendly message instead of an error</span>
+            <pre>=IFERROR(A2 / B2, "Check inputs")</pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- ================= PART B: SQL ================= -->
+
+      <div class="part-head" id="sql">
+        <p class="eyebrow">Part B</p>
+        <h2>SQL essentials</h2>
+        <p>Enough SQL to pull, filter, combine, and summarize data on your own.</p>
+      </div>
+
+      <article class="step">
+        <div class="step-num">B1</div>
+        <div class="step-body">
+          <h2>Read a query from top to bottom</h2>
+          <p>
+            Almost every query uses the same clauses in the same order. Learn the order
+            once and most "syntax error" messages go away.
+          </p>
+          <div class="code">
+            <span class="tag">The shape of a query</span>
+            <pre>SELECT   region, SUM(sales) AS total_sales   -- which columns to show
+FROM     orders                              -- which table
+WHERE    order_year = 2026                   -- which rows to keep
+GROUP BY region                              -- how to group them
+HAVING   SUM(sales) > 10000                  -- which groups to keep
+ORDER BY total_sales DESC;                   -- how to sort the result</pre>
+          </div>
+          <p>
+            Only <code>SELECT</code> and <code>FROM</code> are required. Add the others as
+            you need them, always in this order.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">B2</div>
+        <div class="step-body">
+          <h2>Filter rows with WHERE</h2>
+          <p><code>WHERE</code> is the SQL version of an Excel filter. Combine conditions with <code>AND</code> and <code>OR</code>.</p>
+          <div class="code">
+            <span class="tag">Common filters</span>
+            <pre>SELECT customer_id, last_name, state, balance
+FROM   customers
+WHERE  state IN ('TX', 'OK')            -- matches any value in the list
+  AND  balance BETWEEN 100 AND 5000     -- a range, including both ends
+  AND  last_name LIKE 'Mc%'             -- starts with Mc
+  AND  email IS NOT NULL;               -- not blank</pre>
+          </div>
+          <ul>
+            <li>Text values go in single quotes. Numbers do not.</li>
+            <li>Use <code>IS NULL</code> to test for blanks. Writing <code>= NULL</code> never matches anything.</li>
+            <li>In <code>LIKE</code>, the percent sign stands for any number of characters.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">B3</div>
+        <div class="step-body">
+          <h2>Join two tables</h2>
+          <p>
+            A join is a lookup for whole tables. It matches rows from two tables on a
+            shared column, the way <code>XLOOKUP</code> matches on a lookup value.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Inner join: only matches</span>
+              <pre>SELECT o.order_id, c.last_name
+FROM   orders o
+JOIN   customers c
+  ON   o.customer_id = c.customer_id;</pre>
+            </div>
+            <div class="code">
+              <span class="tag">Left join: keep every order</span>
+              <pre>SELECT o.order_id, c.last_name
+FROM   orders o
+LEFT JOIN customers c
+  ON   o.customer_id = c.customer_id;</pre>
+            </div>
+          </div>
+          <ul>
+            <li>An inner join drops orders that have no matching customer. A left join keeps them and leaves the customer columns blank.</li>
+            <li>The letters <code>o</code> and <code>c</code> are aliases, short nicknames for the tables so you do not retype the full names.</li>
+            <li>If your row count jumps after a join, the column you joined on has duplicates in one of the tables.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">B4</div>
+        <div class="step-body">
+          <h2>Summarize with GROUP BY</h2>
+          <p>
+            <code>GROUP BY</code> is the SQL version of a PivotTable. It collapses rows
+            into one line per category and calculates a summary for each.
+          </p>
+          <div class="code">
+            <span class="tag">Sales by region</span>
+            <pre>SELECT   region,
+         COUNT(*)   AS orders,
+         SUM(sales) AS total_sales,
+         AVG(sales) AS average_sale
+FROM     orders
+GROUP BY region
+ORDER BY total_sales DESC;</pre>
+          </div>
+          <p>
+            The rule that trips people up: every column in <code>SELECT</code> must either
+            be listed in <code>GROUP BY</code> or sit inside a summary function such as
+            <code>SUM</code> or <code>COUNT</code>.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">B5</div>
+        <div class="step-body">
+          <h2>Label rows with CASE</h2>
+          <p>
+            <code>CASE</code> does the job of Excel's <code>IF</code>. It checks conditions
+            in order and returns the first one that is true.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Excel</span>
+              <pre>=IFS(D2 >= 5000, "Large",
+     D2 >= 1000, "Medium",
+     TRUE, "Small")</pre>
+            </div>
+            <div class="code">
+              <span class="tag">SQL</span>
+              <pre>SELECT order_id,
+  CASE WHEN sales >= 5000 THEN 'Large'
+       WHEN sales >= 1000 THEN 'Medium'
+       ELSE 'Small'
+  END AS order_size
+FROM orders;</pre>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ================= PART C: VALIDATION ================= -->
+
+      <div class="part-head" id="validation">
+        <p class="eyebrow">Part C</p>
+        <h2>Validation checks</h2>
+        <p>
+          Run these before you report on any dataset. Each one shows the Excel way and the
+          SQL way.
+        </p>
+      </div>
+
+      <article class="step">
+        <div class="step-num">C1</div>
+        <div class="step-body">
+          <h2>Make a copy before you touch anything</h2>
+          <p>
+            Validation should never change the original. In Excel, save the workbook under
+            a new name or duplicate the sheet and work there. In SQL, stick to
+            <code>SELECT</code> statements while you investigate. They read data without
+            changing it.
+          </p>
+          <p class="callout">
+            If a check turns up a problem, write down what you found and how many rows it
+            affects before you fix anything. That note is what your manager or teammate
+            will ask for.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">C2</div>
+        <div class="step-body">
+          <h2>Look for duplicate records</h2>
+          <p>
+            A customer or invoice that appears twice gets counted twice. Check the column
+            that is supposed to be unique, such as an ID or invoice number.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Excel</span>
+              <pre>=COUNTIF($A$2:$A$500, A2) > 1</pre>
+            </div>
+            <div class="code">
+              <span class="tag">SQL</span>
+              <pre>SELECT customer_id, COUNT(*) AS times_seen
+FROM customers
+GROUP BY customer_id
+HAVING COUNT(*) > 1;</pre>
+            </div>
+          </div>
+          <ul>
+            <li>In Excel, put the formula in a helper column and fill it down. <code>TRUE</code> means the value appears more than once.</li>
+            <li>For a quick visual pass, select the column and use Home, Conditional Formatting, Highlight Cells Rules, Duplicate Values.</li>
+            <li>Only use Data, Remove Duplicates on your copy, and only after you know why the duplicates exist.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">C3</div>
+        <div class="step-body">
+          <h2>Compare row counts</h2>
+          <p>
+            Count the rows in the source, then count them in your export or report. The
+            two numbers should match. If they do not, records were dropped, filtered out,
+            or multiplied by a join.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Excel</span>
+              <pre>=COUNTA(A2:A500)</pre>
+            </div>
+            <div class="code">
+              <span class="tag">SQL</span>
+              <pre>SELECT COUNT(*) AS row_count
+FROM customers;</pre>
+            </div>
+          </div>
+          <p>
+            <code>COUNT(*)</code> counts every row in the table. <code>COUNT(column)</code>
+            skips rows where that column is empty, so the two can give different answers.
+            That difference is itself a useful clue.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">C4</div>
+        <div class="step-body">
+          <h2>Tie out the totals</h2>
+          <p>
+            Two tables can have the same number of rows and still disagree. Add up a key
+            amount on both sides, such as balance or sales, and compare.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Excel</span>
+              <pre>=SUM(D2:D500)</pre>
+            </div>
+            <div class="code">
+              <span class="tag">SQL</span>
+              <pre>SELECT SUM(balance) AS total_balance
+FROM accounts;</pre>
+            </div>
+          </div>
+          <p>
+            If the totals are off, break the sum down by a category such as month or
+            region. The group where the numbers stop matching tells you where to look.
+          </p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">C5</div>
+        <div class="step-body">
+          <h2>Hunt for blanks</h2>
+          <p>
+            Empty cells are easy to miss and they are skipped by sums, lookups, and joins.
+            Count the blanks in every column your report depends on.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Excel</span>
+              <pre>=COUNTBLANK(A2:A500)</pre>
+            </div>
+            <div class="code">
+              <span class="tag">SQL</span>
+              <pre>SELECT COUNT(*) AS blank_rows
+FROM customers
+WHERE customer_id IS NULL;</pre>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-num">C6</div>
+        <div class="step-body">
+          <h2>Find rows that are missing from the other table</h2>
+          <p>
+            When counts do not match, the next question is which records are missing.
+            Look up every key from the first list in the second and keep the ones with no
+            match.
+          </p>
+          <div class="two-col">
+            <div class="code">
+              <span class="tag">Excel</span>
+              <pre>=IF(COUNTIF(Report!A:A, A2) = 0,
+    "Missing", "")</pre>
+            </div>
+            <div class="code">
+              <span class="tag">SQL</span>
+              <pre>SELECT s.customer_id
+FROM   source s
+LEFT JOIN report r
+  ON   s.customer_id = r.customer_id
+WHERE  r.customer_id IS NULL;</pre>
+            </div>
+          </div>
+          <p>
+            Run it in both directions. Records can be missing from the report, and the
+            report can also contain records that were never in the source.
+          </p>
+        </div>
+      </article>
+
+      <!-- ================= PART D: REFERENCE ================= -->
+
+      <div class="part-head" id="reference">
+        <p class="eyebrow">Part D</p>
+        <h2>Quick reference</h2>
+        <p>The same job in both tools, side by side.</p>
+      </div>
+
+      <article class="step">
+        <div class="step-num">D1</div>
+        <div class="step-body">
+          <table>
+            <thead>
+              <tr><th>You want to</th><th>Excel</th><th>SQL</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Keep only some rows</td><td>Filter</td><td><code>WHERE</code></td></tr>
+              <tr><td>Sort the results</td><td>Sort</td><td><code>ORDER BY</code></td></tr>
+              <tr><td>Pull data from another table</td><td><code>XLOOKUP</code>, <code>VLOOKUP</code></td><td><code>JOIN ... ON</code></td></tr>
+              <tr><td>Total by category</td><td>PivotTable, <code>SUMIFS</code></td><td><code>SUM</code> with <code>GROUP BY</code></td></tr>
+              <tr><td>Count matching rows</td><td><code>COUNTIFS</code></td><td><code>COUNT(*)</code> with <code>WHERE</code></td></tr>
+              <tr><td>List each value once</td><td>Remove Duplicates, <code>UNIQUE</code></td><td><code>SELECT DISTINCT</code></td></tr>
+              <tr><td>Label rows with a rule</td><td><code>IF</code>, <code>IFS</code></td><td><code>CASE WHEN</code></td></tr>
+              <tr><td>Find repeats</td><td><code>COUNTIF</code></td><td><code>GROUP BY</code> with <code>HAVING COUNT(*) &gt; 1</code></td></tr>
+              <tr><td>Find blanks</td><td><code>COUNTBLANK</code></td><td><code>WHERE column IS NULL</code></td></tr>
+              <tr><td>Find what is missing</td><td><code>COUNTIF</code> equal to 0</td><td><code>LEFT JOIN</code> with <code>IS NULL</code></td></tr>
+            </tbody>
+          </table>
+          <p>
+            Stuck on a step, or is your situation a little different? Open the chat bubble
+            in the corner and describe what you are seeing.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="index.html#builder">Try the formula builder</a>
+            <a class="btn ghost" href="index.html">&larr; Back to home</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p class="fine">Data Validation Copilot gives general Excel and SQL guidance. It does not access your files.</p>
+    </div>
+  </footer>
+
+  <!--
+    CHATBOT (same block as index.html)
+    Replace YOUR_CHATBOT_ID in BOTH places below with your Chatling ID.
+  -->
+  <script>
+    window.chtlConfig = { chatbotId: "YOUR_CHATBOT_ID" };
+  </script>
+  <script async data-id="YOUR_CHATBOT_ID" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+
+</body>
+</html>

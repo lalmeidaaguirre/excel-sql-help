@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Validation Copilot | Excel and SQL help</title>
+  <meta name="description" content="Plain-language help with Excel and SQL: formulas, lookups, PivotTables, queries, joins, and data checks.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">fx</span>
+        Data Validation Copilot
+      </a>
+      <a class="nav-link" href="guide.html">Playbook</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <div>
+          <div class="formula-bar" aria-hidden="true">
+            <span class="fx">fx</span>
+            <span>=HELP("Excel", "SQL")</span>
+          </div>
+          <h1>Excel and SQL help, <em>in plain language</em>.</h1>
+          <p class="lede">
+            Stuck on a formula, a lookup, or a query that will not run? Get step-by-step
+            help with Excel and SQL, from your first XLOOKUP to joining tables, plus the
+            checks that keep bad data out of your reports.
+          </p>
+          <div class="cta-row">
+            <!-- REQUIREMENT 3: button that leads to the second page -->
+            <a class="btn" href="guide.html">Open the Excel and SQL playbook &rarr;</a>
+            <a class="btn ghost" href="#builder">Build a formula</a>
+          </div>
+        </div>
+
+        <!--
+          REQUIREMENTS 1 + 2: AI-generated video, auto-play on a loop.
+          When your video is ready, name it video.mp4 and upload it to the
+          same GitHub folder as this file. Nothing else needs to change.
+          (muted + playsinline are required for browsers to allow autoplay.)
+        -->
+        <div class="video-frame no-video" id="videoFrame">
+          <video id="heroVideo" autoplay loop muted playsinline preload="auto"
+                 aria-label="Short video illustrating data validation in a spreadsheet">
+            <source src="video.mp4" type="video/mp4">
+          </video>
+          <div class="video-fallback" aria-hidden="true">
+            <span class="dim">-- validation run</span>
+            <span>rows_source ...... 12,480</span>
+            <span>rows_report ...... 12,480 <span class="ok">match</span></span>
+            <span>duplicates ....... 3 <span class="warn">review</span></span>
+            <span>sum(balance) ..... <span class="ok">match</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT IT HELPS WITH -->
+    <section>
+      <div class="wrap">
+        <p class="eyebrow">What you can get help with</p>
+        <h2>Three areas, one place to ask</h2>
+        <div class="cards">
+          <article class="card">
+            <span class="cell-ref">A1</span>
+            <h3>Excel formulas and tools</h3>
+            <ul>
+              <li>Lookups with XLOOKUP and VLOOKUP</li>
+              <li>Conditional totals with SUMIFS and COUNTIFS</li>
+              <li>Cleaning messy text and dates</li>
+              <li>PivotTables for quick summaries</li>
+              <li>Decoding errors like #N/A and #REF!</li>
+            </ul>
+            <a class="card-link" href="guide.html#excel">Excel essentials &rarr;</a>
+          </article>
+          <article class="card">
+            <span class="cell-ref">B1</span>
+            <h3>SQL queries</h3>
+            <ul>
+              <li>Reading a query from top to bottom</li>
+              <li>Filtering rows with WHERE</li>
+              <li>Joining two tables</li>
+              <li>Summarizing with GROUP BY</li>
+              <li>Sorting and limiting results</li>
+            </ul>
+            <a class="card-link" href="guide.html#sql">SQL essentials &rarr;</a>
+          </article>
+          <article class="card">
+            <span class="cell-ref">C1</span>
+            <h3>Data validation</h3>
+            <ul>
+              <li>Finding duplicate records</li>
+              <li>Comparing row counts with COUNT(*)</li>
+              <li>Tying out totals with SUM</li>
+              <li>Hunting for blanks</li>
+              <li>Spotting rows missing from a table</li>
+            </ul>
+            <a class="card-link" href="guide.html#validation">Validation checks &rarr;</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXCEL TO SQL TRANSLATOR -->
+    <section>
+      <div class="wrap">
+        <p class="eyebrow">Excel to SQL</p>
+        <h2>If you know Excel, you already know half of SQL</h2>
+        <p class="section-intro">
+          Most SQL keywords do a job you have already done in a spreadsheet. Find the
+          Excel move you know on the left and read across.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>You want to</th><th>In Excel</th><th>In SQL</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Keep only some rows</td><td>Filter a column</td><td><code>WHERE region = 'West'</code></td></tr>
+              <tr><td>Sort the results</td><td>Sort A to Z</td><td><code>ORDER BY last_name</code></td></tr>
+              <tr><td>Pull data from another table</td><td><code>XLOOKUP</code> or <code>VLOOKUP</code></td><td><code>JOIN ... ON</code></td></tr>
+              <tr><td>Total by category</td><td>PivotTable or <code>SUMIFS</code></td><td><code>SUM(...)</code> with <code>GROUP BY</code></td></tr>
+              <tr><td>Count matching rows</td><td><code>COUNTIFS</code></td><td><code>COUNT(*)</code> with <code>WHERE</code></td></tr>
+              <tr><td>List each value once</td><td>Remove Duplicates or <code>UNIQUE</code></td><td><code>SELECT DISTINCT</code></td></tr>
+              <tr><td>Label rows with a rule</td><td><code>IF</code> or <code>IFS</code></td><td><code>CASE WHEN ... THEN ... END</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASK THE CHATBOT -->
+    <section>
+      <div class="wrap">
+        <p class="eyebrow">Ask the copilot</p>
+        <h2>Have a question? The chatbot is in the corner of every page.</h2>
+        <p class="section-intro">
+          Click the chat bubble at the bottom right and ask in your own words. Not sure
+          where to start? Click a question below to copy it, then paste it into the chat.
+        </p>
+        <div class="chips">
+          <button class="chip" type="button">How do I find duplicate records in Excel?</button>
+          <button class="chip" type="button">What does COUNT(*) tell me when comparing two tables?</button>
+          <button class="chip" type="button">How can I use SUM to compare total balances?</button>
+          <button class="chip" type="button">How do I clean up extra spaces in Excel?</button>
+          <button class="chip" type="button">How do I remove duplicates without losing data?</button>
+        </div>
+        <p class="chip-note" id="chipNote" role="status"></p>
+      </div>
+    </section>
+
+    <!-- X-FACTOR: FORMULA + QUERY BUILDER -->
+    <section id="builder">
+      <div class="wrap">
+        <p class="eyebrow">Formula and query builder</p>
+        <h2>Pick a task. Get the Excel formula and the SQL.</h2>
+        <p class="section-intro">
+          Type your own table, column, and range. The formula and query update as you
+          type, ready to copy.
+        </p>
+
+        <div class="builder">
+          <form class="builder-form" id="builderForm" onsubmit="return false">
+            <div class="field">
+              <label for="task">What do you want to do?</label>
+              <select id="task">
+                <option value="dupes">Find duplicate values</option>
+                <option value="count">Count the rows</option>
+                <option value="sum">Total a column</option>
+                <option value="blanks">Find blank values</option>
+                <option value="unique">Count unique values</option>
+                <option value="avg">Average a column</option>
+                <option value="max">Find the largest value</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="range">Excel range</label>
+              <input id="range" type="text" value="A2:A500" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="field">
+              <label for="table">SQL table name</label>
+              <input id="table" type="text" value="customers" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="field">
+              <label for="column">SQL column name</label>
+              <input id="column" type="text" value="customer_id" autocomplete="off" spellcheck="false">
+            </div>
+          </form>
+
+          <div class="builder-out">
+            <div>
+              <div class="out-head">
+                <span class="out-label">Excel</span>
+                <button class="copy-btn" type="button" data-copy="excelOut">Copy</button>
+              </div>
+              <pre id="excelOut"></pre>
+            </div>
+            <div>
+              <div class="out-head">
+                <span class="out-label">SQL</span>
+                <button class="copy-btn" type="button" data-copy="sqlOut">Copy</button>
+              </div>
+              <pre id="sqlOut"></pre>
+            </div>
+            <p class="out-why" id="whyOut"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <!-- REQUIREMENT 5: X-factor description, under 50 words -->
+      <p class="xfactor">
+        <strong>X-Factor:</strong>
+        The Formula and Query Builder is an interactive tool. Choose a task, type
+        your own table, column, and range, and it instantly writes a matching Excel
+        formula and SQL query you can copy with one click.
+      </p>
+      <p class="fine">Data Validation Copilot gives general Excel and SQL guidance. It does not access your files.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ---- Hero video: show the placeholder panel until video.mp4 exists ----
+    (function () {
+      var frame = document.getElementById('videoFrame');
+      var video = document.getElementById('heroVideo');
+      var source = video.querySelector('source');
+      function noVideo() { frame.classList.add('no-video'); }
+      source.addEventListener('error', noVideo);
+      video.addEventListener('error', noVideo);
+      video.addEventListener('loadeddata', function () {
+        frame.classList.remove('no-video');
+        var p = video.play();
+        if (p && p.catch) { p.catch(function () {}); }
+      });
+    })();
+
+    // ---- Copy helper ----
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function (resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); resolve(); } catch (e) { reject(e); }
+        document.body.removeChild(ta);
+      });
+    }
+
+    // ---- Sample question chips ----
+    (function () {
+      var note = document.getElementById('chipNote');
+      document.querySelectorAll('.chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          copyText(chip.textContent.trim()).then(function () {
+            note.textContent = 'Copied. Open the chat bubble and paste it in.';
+          }, function () {
+            note.textContent = 'Could not copy automatically. Type the question into the chat bubble.';
+          });
+        });
+      });
+    })();
+
+    // ---- Formula and Query Builder (X-factor) ----
+    (function () {
+      var task = document.getElementById('task');
+      var range = document.getElementById('range');
+      var table = document.getElementById('table');
+      var column = document.getElementById('column');
+      var excelOut = document.getElementById('excelOut');
+      var sqlOut = document.getElementById('sqlOut');
+      var whyOut = document.getElementById('whyOut');
+
+      // Turn A2:A500 into $A$2:$A$500 and return the first cell (A2).
+      function parseRange(raw) {
+        var m = /^\s*([A-Za-z]{1,3})(\d+)\s*:\s*([A-Za-z]{1,3})(\d+)\s*$/.exec(raw);
+        if (!m) { return null; }
+        var c1 = m[1].toUpperCase(), r1 = m[2], c2 = m[3].toUpperCase(), r2 = m[4];
+        return {
+          plain: c1 + r1 + ':' + c2 + r2,
+          locked: '$' + c1 + '$' + r1 + ':$' + c2 + '$' + r2,
+          first: c1 + r1
+        };
+      }
+
+      // Keep SQL names to letters, numbers, underscores, and dots.
+      function cleanName(raw, fallback) {
+        var v = raw.trim().replace(/[^A-Za-z0-9_.]/g, '');
+        return v || fallback;
+      }
+
+      function render() {
+        var r = parseRange(range.value) || parseRange('A2:A500');
+        var t = cleanName(table.value, 'your_table');
+        var c = cleanName(column.value, 'your_column');
+        var excel, sql, why;
+
+        switch (task.value) {
+          case 'count':
+            excel = '=COUNTA(' + r.plain + ')';
+            sql = 'SELECT COUNT(*) AS row_count\nFROM ' + t + ';';
+            why = 'Run the count on the source and on your report. If the two numbers differ, rows were dropped or added along the way.';
+            break;
+          case 'sum':
+            excel = '=SUM(' + r.plain + ')';
+            sql = 'SELECT SUM(' + c + ') AS total\nFROM ' + t + ';';
+            why = 'Matching row counts are not enough. Compare totals too, because one wrong amount changes the sum but not the count.';
+            break;
+          case 'blanks':
+            excel = '=COUNTBLANK(' + r.plain + ')';
+            sql = 'SELECT COUNT(*) AS blank_rows\nFROM ' + t + '\nWHERE ' + c + ' IS NULL;';
+            why = 'Blank keys and amounts are skipped by many formulas and joins, so they quietly disappear from totals.';
+            break;
+          case 'unique':
+            excel = '=COUNTA(UNIQUE(' + r.plain + '))';
+            sql = 'SELECT COUNT(DISTINCT ' + c + ') AS unique_values\nFROM ' + t + ';';
+            why = 'Compare this with the plain row count. If unique values are fewer than rows, something repeats. UNIQUE needs Excel 2021 or Microsoft 365.';
+            break;
+          case 'avg':
+            excel = '=AVERAGE(' + r.plain + ')';
+            sql = 'SELECT AVG(' + c + ') AS average_value\nFROM ' + t + ';';
+            why = 'Both versions skip blank values instead of treating them as zero, so check for blanks first if the average looks too high.';
+            break;
+          case 'max':
+            excel = '=MAX(' + r.plain + ')';
+            sql = 'SELECT MAX(' + c + ') AS largest_value\nFROM ' + t + ';';
+            why = 'A quick way to spot outliers and typos, such as an order amount with two extra zeros. Swap MAX for MIN to check the low end.';
+            break;
+          default:
+            excel = '=COUNTIF(' + r.locked + ', ' + r.first + ') > 1';
+            sql = 'SELECT ' + c + ', COUNT(*) AS times_seen\nFROM ' + t + '\nGROUP BY ' + c + '\nHAVING COUNT(*) > 1;';
+            why = 'Put the Excel formula in a helper column and fill it down. TRUE marks a value that appears more than once. The SQL lists each repeated value and how many times it shows up.';
+        }
+
+        excelOut.textContent = excel;
+        sqlOut.textContent = sql;
+        whyOut.textContent = why;
+      }
+
+      [task, range, table, column].forEach(function (el) {
+        el.addEventListener('input', render);
+        el.addEventListener('change', render);
+      });
+
+      document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var text = document.getElementById(btn.getAttribute('data-copy')).textContent;
+          copyText(text).then(function () {
+            btn.textContent = 'Copied';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 1400);
+          });
+        });
+      });
+
+      render();
+    })();
+  </script>
+
+  <!--
+    REQUIREMENT 4: CHATBOT (Data Validation Copilot, built in Chatling)
+    Replace YOUR_CHATBOT_ID in BOTH places below with the ID from your
+    Chatling widget code. The same block is in guide.html.
+  -->
+  <script>
+    window.chtlConfig = { chatbotId: "YOUR_CHATBOT_ID" };
+  </script>
+  <script async data-id="YOUR_CHATBOT_ID" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+
+</body>
+</html>
